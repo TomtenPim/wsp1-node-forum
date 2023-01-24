@@ -26,3 +26,5 @@ INSERT INTO ja15comments (authorId, postId, content) VALUES (1, 1, 'Detta är en
 SELECT ja15comments.*, ja15users.name FROM ja15comments
 JOIN ja15users ON ja15comments.authorId = ja15users.id;
 ```
+
+om detta fungerar blir jag glad
