@@ -19,6 +19,18 @@ router.get('/', async function (req, res) {
     });
 });
 
+router.get('/new', async function (req, res, next) {
+    res.render('new.njk', {
+        title: 'Nytt inlägg',
+    });
+});
+
+router.post('/new', async function (req, res, next) {
+    const { title, content } = req.body;
+    const author = 1;
+    const [rows] = await promisePool.query("INSERT INTO sa04forum (author, title, content) VALUES (?, ?, ?)", [author, title, content]);
+    res.redirect('/');
+});
 
 
 module.exports = router;

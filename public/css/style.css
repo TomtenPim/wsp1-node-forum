@@ -1,0 +1,17 @@
+body {
+  background-color: aqua;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+ul {
+  list-style: none;
+}
+ul > li {
+  display: flex;
+  align-items: center;
+}
+
+/*# sourceMappingURL=style.css.map */
