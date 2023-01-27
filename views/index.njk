@@ -1,12 +1,9 @@
 {% extends "layout.njk" %}
 {% block  content %}
-  <h1>
-    Dedede
-  </h1>
   <ul>
     {% for row in rows %}
         <li>
-            {{ row | dump }}
+             {% include "post.njk" %}
         </li>
     {% endfor %}
 </ul>

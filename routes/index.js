@@ -10,25 +10,50 @@ const pool = mysql.createPool({
 });
 const promisePool = pool.promise();
 
+const nav = [
+    {
+        url: "/",
+        title: "Home"
+    },
+    {
+        url: "/new",
+        title: "New"
+    },
+    {
+        url: "/error",
+        title: "Error"
+    },
+]
+
 
 router.get('/', async function (req, res) {
-    const [rows] = await promisePool.query("SELECT * FROM sa04forum");
+    const [rows] = await promisePool.query("SELECT * FROM sa04forum JOIN sa04users");
     res.render('index.njk', {
         rows: rows,
         title: 'Forum',
+        nav: nav,
     });
 });
 
 router.get('/new', async function (req, res, next) {
     res.render('new.njk', {
         title: 'Nytt inlägg',
+        nav: nav,
     });
 });
 
 router.post('/new', async function (req, res, next) {
-    const { title, content } = req.body;
-    const author = 1;
-    const [rows] = await promisePool.query("INSERT INTO sa04forum (author, title, content) VALUES (?, ?, ?)", [author, title, content]);
+    const { author, title, content } = req.body;
+
+    let [user] = await promisePool.query('SELECT * FROM sa04users WHERE name = ?', [author]);
+    if (user.length === 0) {
+        [user] = await promisePool.query('INSERT INTO sa04users (name) VALUES (?)', [author]);
+    }
+
+    console.log(user)
+    const authorId = user.insertId || user[0].id;
+
+    const [rows] = await promisePool.query('INSERT INTO sa04forum (authorId, title, content) VALUES (?, ?, ?)', [authorId, title, content]);
     res.redirect('/');
 });
 
